@@ -13,3 +13,4 @@ results/          # Folder with inference results
 .DS_Store
 Thumbs.db
 results
+data

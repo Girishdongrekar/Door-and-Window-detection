@@ -7,28 +7,25 @@
             font-family: Arial, sans-serif;
             padding: 20px;
         }
-        form {
-            margin-bottom: 20px;
-        }
-        .results-container {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
         #jsonOutput {
-            background-color: #f4f4f4;
+            max-height: 400px;
+            overflow-y: auto;
+            width: 48%;
+            float: left;
+            border: 1px solid #ccc;
             padding: 10px;
-            border-radius: 5px;
-            max-width: 500px;
-            max-height: 500px;
-            overflow: auto;
-            flex: 1;
+            box-sizing: border-box;
         }
         #detectedImage {
-            max-width: 500px;
-            max-height: 500px;
+            max-width: 48%;
+            float: right;
+            display: none;
             border: 1px solid #ccc;
-            border-radius: 5px;
+        }
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
         }
     </style>
 </head>
@@ -39,10 +36,9 @@
         <button type="submit">Detect</button>
     </form>
 
-    <h2>Detection Results</h2>
-    <div class="results-container">
+    <div class="clearfix">
         <pre id="jsonOutput"></pre>
-        <img id="detectedImage" style="display: none;" />
+        <img id="detectedImage" />
     </div>
 
     <script>
@@ -59,7 +55,6 @@
             });
 
             const data = await response.json();
-
             document.getElementById('jsonOutput').textContent = JSON.stringify(data.detections, null, 2);
 
             if (data.detected_image_url) {
