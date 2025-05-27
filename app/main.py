@@ -22,9 +22,11 @@ os.makedirs("templates", exist_ok=True)
 templates = Jinja2Templates(directory="templates")
 app.mount("/results", StaticFiles(directory="results"), name="results")
 
-@app.get("/")
-def read_root():
-    return {"message": "YOLOv8 Detection API is up and running!"}
+
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
+
 
 @app.get("/upload", response_class=HTMLResponse)
 def upload_page(request: Request):
