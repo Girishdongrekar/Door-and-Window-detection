@@ -1,0 +1,213 @@
+{
+    "detections": [
+        {
+            "bbox": [
+                565.24,
+                164.91,
+                602.18,
+                306.66
+            ],
+            "class_id": 1,
+            "class_name": "Window",
+            "confidence": 0.93
+        },
+        {
+            "bbox": [
+                845.19,
+                254.46,
+                913.02,
+                316.9
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.91
+        },
+        {
+            "bbox": [
+                700.73,
+                314.98,
+                728.8,
+                413.44
+            ],
+            "class_id": 1,
+            "class_name": "Window",
+            "confidence": 0.87
+        },
+        {
+            "bbox": [
+                351.5,
+                566.78,
+                530.2,
+                602.81
+            ],
+            "class_id": 1,
+            "class_name": "Window",
+            "confidence": 0.86
+        },
+        {
+            "bbox": [
+                171.5,
+                328.03,
+                234.23,
+                388.24
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.79
+        },
+        {
+            "bbox": [
+                339.93,
+                172.71,
+                405.38,
+                238.28
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.76
+        },
+        {
+            "bbox": [
+                1193.37,
+                293.74,
+                1220.64,
+                424.71
+            ],
+            "class_id": 1,
+            "class_name": "Window",
+            "confidence": 0.75
+        },
+        {
+            "bbox": [
+                748.47,
+                418.31,
+                795.66,
+                465.05
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.73
+        },
+        {
+            "bbox": [
+                973.35,
+                264.55,
+                1017.13,
+                305.86
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.69
+        },
+        {
+            "bbox": [
+                399.89,
+                322.32,
+                470.11,
+                400.3
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.63
+        },
+        {
+            "bbox": [
+                556.57,
+                900.22,
+                614.75,
+                964.88
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.57
+        },
+        {
+            "bbox": [
+                230.54,
+                175.46,
+                293.63,
+                233.42
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.53
+        },
+        {
+            "bbox": [
+                135.52,
+                119.27,
+                240.18,
+                147.49
+            ],
+            "class_id": 1,
+            "class_name": "Window",
+            "confidence": 0.5
+        },
+        {
+            "bbox": [
+                706.98,
+                464.11,
+                755.67,
+                517.91
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.47
+        },
+        {
+            "bbox": [
+                240.08,
+                382.1,
+                317.0,
+                442.73
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.34
+        },
+        {
+            "bbox": [
+                91.22,
+                405.4,
+                153.83,
+                467.09
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.34
+        },
+        {
+            "bbox": [
+                556.23,
+                976.09,
+                612.93,
+                1026.07
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.32
+        },
+        {
+            "bbox": [
+                1193.98,
+                294.97,
+                1220.5,
+                386.89
+            ],
+            "class_id": 1,
+            "class_name": "Window",
+            "confidence": 0.26
+        },
+        {
+            "bbox": [
+                972.61,
+                397.23,
+                1036.52,
+                454.38
+            ],
+            "class_id": 0,
+            "class_name": "Door",
+            "confidence": 0.26
+        }
+    ]
+}

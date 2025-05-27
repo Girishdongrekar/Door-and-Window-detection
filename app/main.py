@@ -1,24 +1,39 @@
-from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, UploadFile, File, Request
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from ultralytics import YOLO
 import shutil
 import uuid
 import os
-import json  # Import json module to save data
+import json
 
 app = FastAPI()
-model = YOLO("app/best.pt")  # Load your trained YOLO model
 
-# Define class names from your training config
+# Load YOLOv8 model
+model = YOLO("app/best.pt")  # Adjust path if needed
 class_names = ['Door', 'Window']
+
+# Create folders if not exist
+os.makedirs("results", exist_ok=True)
+os.makedirs("static", exist_ok=True)
+os.makedirs("templates", exist_ok=True)
+
+# Set up templates and static file serving
+templates = Jinja2Templates(directory="templates")
+app.mount("/results", StaticFiles(directory="results"), name="results")
 
 @app.get("/")
 def read_root():
     return {"message": "YOLOv8 Detection API is up and running!"}
 
+@app.get("/upload", response_class=HTMLResponse)
+def upload_page(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
+
 @app.post("/detect")
 async def detect(file: UploadFile = File(...)):
-    # Save uploaded file temporarily
+    # Save uploaded image
     file_ext = file.filename.split('.')[-1]
     temp_filename = f"temp_{uuid.uuid4()}.{file_ext}"
     with open(temp_filename, "wb") as buffer:
@@ -27,7 +42,6 @@ async def detect(file: UploadFile = File(...)):
     # Run detection
     results = model(temp_filename)
     boxes = []
-
     for result in results:
         for box in result.boxes:
             class_id = int(box.cls[0])
@@ -38,17 +52,23 @@ async def detect(file: UploadFile = File(...)):
                 "confidence": round(float(box.conf[0]), 2)
             })
 
-    # ✅ Save results to a JSON file
-    os.makedirs("results", exist_ok=True)  # Create 'results/' folder if it doesn't exist
-    json_filename = os.path.join("results", f"result_{uuid.uuid4()}.json")
-    with open(json_filename, "w") as json_file:
+    # Save detection result as JSON
+    json_name = f"result_{uuid.uuid4()}.json"
+    json_path = os.path.join("results", json_name)
+    with open(json_path, "w") as json_file:
         json.dump({"detections": boxes}, json_file, indent=4)
 
-    # Clean up temp image
     os.remove(temp_filename)
 
-    # Return detection + json filename in response
     return JSONResponse(content={
         "detections": boxes,
-        "json_saved_as": json_filename
+        "json_result_url": f"/results/{json_name}"
     })
+    
+@app.on_event("startup")
+def print_useful_links():
+    print("\n🚀 YOLOv8 Detection API is live!")
+    print("📤 Upload Page:      http://127.0.0.1:8000/upload")
+    print("📚 Swagger Docs:     http://127.0.0.1:8000/docs")
+    print("🏠 Root Endpoint:    http://127.0.0.1:8000/\n")
+
