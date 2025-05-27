@@ -1,0 +1,14 @@
+# Python-related
+__pycache__/
+*.pyc
+
+# YOLOv8 + FastAPI project
+*.pt              # Trained model files
+*.json            # Output JSON results
+temp_*.*
+results/          # Folder with inference results
+.env              # Environment secrets if added
+
+# OS-specific
+.DS_Store
+Thumbs.db

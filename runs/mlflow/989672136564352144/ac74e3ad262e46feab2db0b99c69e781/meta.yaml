@@ -1,0 +1,15 @@
+artifact_uri: file:C:/Users/balak/Desktop/project1/runs/mlflow/989672136564352144/ac74e3ad262e46feab2db0b99c69e781/artifacts
+end_time: 1748315494569
+entry_point_name: ''
+experiment_id: '989672136564352144'
+lifecycle_stage: active
+run_id: ac74e3ad262e46feab2db0b99c69e781
+run_name: yolov8-door
+run_uuid: ac74e3ad262e46feab2db0b99c69e781
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748314178606
+status: 3
+tags: []
+user_id: balak
