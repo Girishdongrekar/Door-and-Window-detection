@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Request
-from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from ultralytics import YOLO
@@ -14,9 +14,8 @@ app = FastAPI()
 model = YOLO("app/best.pt")  # Adjust path if needed
 class_names = ['Door', 'Window']
 
-# Create folders if not exist
+# Create required folders
 os.makedirs("results", exist_ok=True)
-os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
 # Set up templates and static file serving
@@ -33,15 +32,16 @@ def upload_page(request: Request):
 
 @app.post("/detect")
 async def detect(file: UploadFile = File(...)):
-    # Save uploaded image
+    # Save uploaded image temporarily
     file_ext = file.filename.split('.')[-1]
     temp_filename = f"temp_{uuid.uuid4()}.{file_ext}"
     with open(temp_filename, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # Run detection
+    # Run YOLOv8 inference
     results = model(temp_filename)
     boxes = []
+
     for result in results:
         for box in result.boxes:
             class_id = int(box.cls[0])
@@ -52,23 +52,30 @@ async def detect(file: UploadFile = File(...)):
                 "confidence": round(float(box.conf[0]), 2)
             })
 
-    # Save detection result as JSON
+    # Save detection results to JSON
     json_name = f"result_{uuid.uuid4()}.json"
     json_path = os.path.join("results", json_name)
     with open(json_path, "w") as json_file:
         json.dump({"detections": boxes}, json_file, indent=4)
 
+    # Save rendered image with detections
+    detected_img_name = f"detected_{uuid.uuid4()}.jpg"
+    detected_img_path = os.path.join("results", detected_img_name)
+    results[0].save(filename=detected_img_path)
+
+    # Remove temporary image
     os.remove(temp_filename)
 
+    # Return JSON and image URL
     return JSONResponse(content={
         "detections": boxes,
-        "json_result_url": f"/results/{json_name}"
+        "json_result_url": f"/results/{json_name}",
+        "detected_image_url": f"/results/{detected_img_name}"
     })
-    
+
 @app.on_event("startup")
 def print_useful_links():
     print("\n🚀 YOLOv8 Detection API is live!")
     print("📤 Upload Page:      http://127.0.0.1:8000/upload")
     print("📚 Swagger Docs:     http://127.0.0.1:8000/docs")
     print("🏠 Root Endpoint:    http://127.0.0.1:8000/\n")
-

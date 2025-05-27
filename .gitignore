@@ -12,3 +12,4 @@ results/          # Folder with inference results
 # OS-specific
 .DS_Store
 Thumbs.db
+results

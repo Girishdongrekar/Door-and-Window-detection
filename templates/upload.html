@@ -1,14 +1,73 @@
-<!-- templates/upload.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>YOLOv8 Door/Window Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .results-container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        #jsonOutput {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 500px;
+            max-height: 500px;
+            overflow: auto;
+            flex: 1;
+        }
+        #detectedImage {
+            max-width: 500px;
+            max-height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Upload an Image for Detection</h1>
-    <form action="/detect" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" accept="image/*" required>
         <button type="submit">Detect</button>
     </form>
+
+    <h2>Detection Results</h2>
+    <div class="results-container">
+        <pre id="jsonOutput"></pre>
+        <img id="detectedImage" style="display: none;" />
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/detect', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            document.getElementById('jsonOutput').textContent = JSON.stringify(data.detections, null, 2);
+
+            if (data.detected_image_url) {
+                const img = document.getElementById('detectedImage');
+                img.src = data.detected_image_url;
+                img.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
